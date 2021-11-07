@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/extend-expect'
 
-import { render, screen } from '@testing-library/svelte'
+import { render, screen, fireEvent } from '@testing-library/svelte'
 
 import SvelteMarkdown from '../src/SvelteMarkdown.svelte'
 
@@ -82,5 +82,17 @@ describe('testing default renderers', () => {
     expect(element).toBeInTheDocument()
     expect(element).toContainElement(tableHeaderElement)
     expect(element).toContainElement(tableCellElement)
+  })
+
+  test('parsed event should fire', () => {
+
+    const {component} = render(SvelteMarkdown, {source: `# heading 1`});
+    
+    const mock = Jest.fn();
+
+    component.$on("parsed", mock);
+
+    expect(mock).toHaveBeenCalled();
+
   })
 })
